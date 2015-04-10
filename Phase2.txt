@@ -1,0 +1,19 @@
+
+CMPUT 291 Lec B1 Mini Project 2 Phase 2 TEXT
+April 3, 2013
+Group members: Dylan Stankievech & Alexis Tavares
+
+The raw shell commands to execute Phase 2, see Phase2.java 
+for documentation
+
+============================================================
+sort -u prices.txt | sort -n | perl break.pl > prices_sorted.txt
+sort -u pdates.txt | sort -n | perl break.pl > pdates_sorted.txt
+sort -n ads.txt | perl break.pl > ads_sorted.txt
+sort -u terms.txt | perl break.pl > terms_sorted.txt
+
+
+db_load -f ads_sorted.txt -T -t hash ad.idx
+db_load -f terms_sorted.txt -T -t btree -c duplicates=1 te.idx
+db_load -f pdates_sorted.txt -T -t btree -c duplicates=1 da.idx
+db_load -f prices_sorted.txt -T -t btree -c duplicates=1 pr.idx

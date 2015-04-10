@@ -1,0 +1,68 @@
+CMPUT 291 MINI PROJECT 2
+Alexis Tavares (1302845) & Dylan Stankievech (1230223)
+
+(1) INSTRUCTIONS FOR RUNNING CODE
+    Compile Phase1.java which corresponds to the code for Phase1 in the spec
+    using the command javac Phase1.java, then run using command java 
+    Phase1.java. You will be prompted to enter the name of the file you want
+    to parse. The file should be in the root directory and when entering the 
+    filename you should include the filetype. (ex. file.xml)
+
+    Run Phase2.script which corresponds to Phase2 in the spec using the 
+    command Phase2.script. 
+
+    Compile Phase3.java which correspondonds to the code for Phase3 in the
+    spec using the command javac Phase3.java, then run using java Phase3.java.
+    The program assumes that the indexes in Phase 2 were created properly. 
+
+(2) ALGORITHM FOR EVALUATING QUERIES
+      Note: A "predicate" is the identifer of  word/phrase matching (as given in the spec) what would 
+      	    qualify as a "one word/value" query. An example would be searching "t-camera" or
+	    "price > 600", which had predicates "t-" an "price" respectively.
+ 
+      Our algorithm for evaluating queries was to compact the user inputs white spaces, 
+      and then loop through every predicate of the query,removing ones we find after handling them 
+      until their are none remaining using a series of if-else loops. The first word of 
+      the query is checked to see if it matches the predicates given in the spec, each time
+      we find a predicate we deal with that specific prediacte, delete it from the query and
+      then move to the next predicate if their is one. 
+
+      A seperate method is created for each predicate and  adds matching values to the
+      classwide list of matching results. For each subsequent predicate, the intersection
+      of the classwide list and the current list becomes the new classwide list.
+
+      In particular this allows multiple conditions, since the program handles the query one
+      predicate at a time and loops through the entire query until their are no matching predicates.
+      
+      The wildcard condition was dealt with only in methods where users would be allowed to have
+      wildcards (searching for a keyword or for a term-body specific keyword) using an if block and
+      setting the created  database that allows partial matching.
+      
+      Range searches similarly handle in their own specific method. Since and until have their own 
+      unique methods but more or less the same except one returns results for the DB before a date 
+      and the other after. Both use essentially the same algorith. Retrieve the date from the 
+      users query and then return all entries from the dabase with the correct dates. Until date had 
+      problems as has a slightly altered algorithm: Retrive the date from the users query, if that
+      date is later than the last date in the db do nothing, otherwise do a range search for
+      it. Price > and Price < similarly also have their own methods that are identical except for
+      one returning greater and one returning less: qet the subtstring price value from the query,
+      pad the prices with whitespace to be a total of 8 characters, check the db for values that match.
+      prices_less_than uses the same error removing extra steps as until date.
+ 
+
+
+(3) TEST CASES
+* Also include any assumption you have made or any possible limitations your code may have.
+
+  Our test cases included the examples given in the spec (1 thru 9) to test that each individual
+  single predicate query worked. We used examples where going through the example xml files we 
+  could pin-point the exact number of ads our queries should retun (such as searching by keyword:
+  t-camera or t-evenings and counting the amount of correct ads that appeared compared to what
+  was in the actual file). We did similar for range searches, including testing corner cases like 
+  price > 0 (should return all values, and did) and date > 0000/00/00 (which also returns everything).
+
+  Multiple predicate queries where tested using the results of the above that where smaller. For
+  example, since we already knew the number of t-camera and their corresponding prices, we 
+  checked t-camera price > #. We simple tested multiple different combinations of possible queries
+  and assumed that the systems check for correct order/values works for each indivdual query.
+  
